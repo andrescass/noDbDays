@@ -73,7 +73,7 @@ def incrementDate(currDate):
     
     return result
 
-def processJson(filename, filei):
+def processJson(filename, filei, csvFile):
     #print("hey")
     #with open("jseconds.json" ,'r') as f:
     with open(filename ,'r') as f:
@@ -81,7 +81,7 @@ def processJson(filename, filei):
     #intervalinfo=data.get('intervalsDataPoints')
     data1=data.get('data')
 
-    print(len(data1))
+    print("file {0} with {1} packets".format(filename, len(data1)))
 
 
     #print("length is :{}".format(len(datapoint)),datapoint)  
@@ -113,29 +113,29 @@ def processJson(filename, filei):
                 j = i[idx]
                 
                 if lastline != None and (datetime.datetime.fromtimestamp(j.get('timestamp')/1000).strftime("%y-%m-%dT%H:%M:%S")) > newDate:
-                    #while (datetime.date.fromtimestamp(j.get('timestamp')/1000)) > newTStamp and :
-                    t = datetime.datetime.fromtimestamp(j.get('timestamp')/1000).strftime("%y-%m-%dT%H:%M:%S")
-                    #print("t = {}".format(t))
-                    #print(newDate)
-                    openPrice_ask.append(lastline.get('openPrice').get('ask'))
-                    openPrice_bid.append(lastline.get('openPrice').get('bid'))
-                    closePrice_ask.append(lastline.get('closePrice').get('ask'))
-                    closePrice_bid.append(lastline.get('closePrice').get('bid'))
-                    highPrice_ask.append(lastline.get('closePrice').get('ask'))
-                    highPrice_bid.append(lastline.get('closePrice').get('bid'))
-                    lowPrice_bid.append(lastline.get('lowPrice').get('bid'))
-                
-                    daystamp.append(newDate.split("T")[0])
-                    timestamp.append(newDate)
+                    if newDate.split("T")[1] < "21:00:00" or newDate.split("T")[1] > "22:00:00" :
+                        #while (datetime.date.fromtimestamp(j.get('timestamp')/1000)) > newTStamp and :
+                        t = datetime.datetime.fromtimestamp(j.get('timestamp')/1000).strftime("%y-%m-%dT%H:%M:%S")
+                        #print("t = {}".format(t))
+                        #print(newDate)
+                        openPrice_ask.append(lastline.get('openPrice').get('ask'))
+                        openPrice_bid.append(lastline.get('openPrice').get('bid'))
+                        closePrice_ask.append(lastline.get('closePrice').get('ask'))
+                        closePrice_bid.append(lastline.get('closePrice').get('bid'))
+                        highPrice_ask.append(lastline.get('closePrice').get('ask'))
+                        highPrice_bid.append(lastline.get('closePrice').get('bid'))
+                        lowPrice_bid.append(lastline.get('lowPrice').get('bid'))
                     
-                    lastTradedVolume.append(lastline.get('lastTradedVolume'))
-                    #print(datetime.date.fromtimestamp(j.get('timestamp')/1000).strftime("%d-%m-%yT%H:%M:%S"))
-                    #print(datetime.date.fromtimestamp(lastline.get('timestamp')/1000).strftime("%d-%m-%yT%H:%M:%S"))
-                    #print(newTStamp.strftime("%d-%m-%yT%H:%M:%S"))
+                        daystamp.append(newDate.split("T")[0])
+                        timestamp.append(newDate)
+                        
+                        lastTradedVolume.append(lastline.get('lastTradedVolume'))
+                        #print(datetime.date.fromtimestamp(j.get('timestamp')/1000).strftime("%d-%m-%yT%H:%M:%S"))
+                        #print(datetime.date.fromtimestamp(lastline.get('timestamp')/1000).strftime("%d-%m-%yT%H:%M:%S"))
+                        #print(newTStamp.strftime("%d-%m-%yT%H:%M:%S"))
                     newDate = incrementDate(newDate)
 
                 elif len(j['openPrice']) > 0:
-                    print("len")
                     openPrice_ask.append(j.get('openPrice').get('ask'))
                     openPrice_bid.append(j.get('openPrice').get('bid'))
                     closePrice_ask.append(j.get('closePrice').get('ask'))
@@ -152,20 +152,21 @@ def processJson(filename, filei):
                     lastline = j
                     newDate = incrementDate(datetime.datetime.fromtimestamp(j.get('timestamp')/1000).strftime("%y-%m-%dT%H:%M:%S"))
                     idx += 1
-                elif lastline != None:
-                    openPrice_ask.append(lastline.get('openPrice').get('ask'))
-                    openPrice_bid.append(lastline.get('openPrice').get('bid'))
-                    closePrice_ask.append(lastline.get('closePrice').get('ask'))
-                    closePrice_bid.append(lastline.get('closePrice').get('bid'))
-                    highPrice_ask.append(lastline.get('closePrice').get('ask'))
-                    highPrice_bid.append(lastline.get('closePrice').get('bid'))
-                    lowPrice_bid.append(lastline.get('lowPrice').get('bid'))
-                
-                    daystamp.append(datetime.date.fromtimestamp(j.get('timestamp')/1000).strftime("%y-%m-%d"))
-                    timestamp.append(datetime.datetime.fromtimestamp(j.get('timestamp')/1000).strftime("%y-%m-%dT%H:%M:%S"))
+                else:
+                    if lastline != None:
+                        openPrice_ask.append(lastline.get('openPrice').get('ask'))
+                        openPrice_bid.append(lastline.get('openPrice').get('bid'))
+                        closePrice_ask.append(lastline.get('closePrice').get('ask'))
+                        closePrice_bid.append(lastline.get('closePrice').get('bid'))
+                        highPrice_ask.append(lastline.get('closePrice').get('ask'))
+                        highPrice_bid.append(lastline.get('closePrice').get('bid'))
+                        lowPrice_bid.append(lastline.get('lowPrice').get('bid'))
                     
-                    lastTradedVolume.append(j.get('lastTradedVolume'))
-                    newDate = incrementDate(datetime.datetime.fromtimestamp(j.get('timestamp')/1000).strftime("%y-%m-%dT%H:%M:%S"))
+                        daystamp.append(datetime.date.fromtimestamp(j.get('timestamp')/1000).strftime("%y-%m-%d"))
+                        timestamp.append(datetime.datetime.fromtimestamp(j.get('timestamp')/1000).strftime("%y-%m-%dT%H:%M:%S"))
+                        
+                        lastTradedVolume.append(j.get('lastTradedVolume'))
+                        newDate = incrementDate(datetime.datetime.fromtimestamp(j.get('timestamp')/1000).strftime("%y-%m-%dT%H:%M:%S"))
                     idx += 1
 
 
@@ -192,13 +193,24 @@ def processJson(filename, filei):
     df.reset_index(drop=True, inplace=True)
     #df.to_csv("IsaacScrapper_Pumped{}.csv".format(timeop),index=False)
     #df.to_csv(str(sys.argv[2]),index=False)
-    outputF = "j" + str(filei) + ".csv"
+    outputF = "c" + str(filei) + ".csv"
     df.to_csv(outputF,index=False)
+    csvFile.write(outputF+'\n')
 
 if __name__ == "__main__":
-    fileName = str(sys.argv[1])
-    print(fileName)
-    processJson(fileName, 1)
+    fl = []
+    idx = 0
+    txtF = open("jsonFIles.txt", "r")
+    csvF = open("csvfiles.txt", "w")
+    for l in txtF :
+        fl.append(l.rstrip('\n'))
+        print(fl[len(fl)-1])
+    for z in fl:
+        if len(z) > 0:
+            processJson(z, idx, csvF)
+            idx += 1
+    txtF.close()
+    csvF.close()
 
 
 
