@@ -54,6 +54,9 @@ for l in fl:
         if state == WR:
             if l[i] == "n" and l[i+1] == "I" and l[i+2] == "d":
                 state = CLOSING
+            if l[i] == ":" and l[i+1] == "t" and l[i+2] == "r" and l[i+3] == "u" and l[i+4] == "e":
+                output += l[i] + "\"" + l[i+1] + l[i+2] + l[i-3] + l[i+4] + "\""
+                i = i + 5
             output += l[i]
             i = i+1
         if state == CLOSING:
