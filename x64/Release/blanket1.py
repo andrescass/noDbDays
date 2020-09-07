@@ -125,11 +125,12 @@ def processJson(filename, filei, csvFile):
                         highPrice_ask.append(lastline.get('closePrice').get('ask'))
                         highPrice_bid.append(lastline.get('closePrice').get('bid'))
                         lowPrice_bid.append(lastline.get('lowPrice').get('bid'))
+                        lowPrice_ask.append(lastline.get('closePrice').get('ask'))
                     
                         daystamp.append(newDate.split("T")[0])
                         timestamp.append(newDate)
                         
-                        lastTradedVolume.append(lastline.get('lastTradedVolume'))
+                        lastTradedVolume.append(0)
                         #print(datetime.date.fromtimestamp(j.get('timestamp')/1000).strftime("%d-%m-%yT%H:%M:%S"))
                         #print(datetime.date.fromtimestamp(lastline.get('timestamp')/1000).strftime("%d-%m-%yT%H:%M:%S"))
                         #print(newTStamp.strftime("%d-%m-%yT%H:%M:%S"))
@@ -143,6 +144,7 @@ def processJson(filename, filei, csvFile):
                     highPrice_ask.append(j.get('highPrice').get('ask'))
                     highPrice_bid.append(j.get('highPrice').get('bid'))
                     lowPrice_bid.append(j.get('lowPrice').get('bid'))
+                    lowPrice_ask.append(j.get('closePrice').get('ask'))
                 
                     daystamp.append(datetime.date.fromtimestamp(j.get('timestamp')/1000).strftime("%y-%m-%d"))
                     timestamp.append(datetime.datetime.fromtimestamp(j.get('timestamp')/1000).strftime("%y-%m-%dT%H:%M:%S"))
@@ -173,17 +175,27 @@ def processJson(filename, filei, csvFile):
     PackedData=[daystamp,
     timestamp,
     openPrice_ask,
+    openPrice_bid,            
     highPrice_ask,
+    highPrice_bid,
+    lowPrice_ask,
     lowPrice_bid,
+    closePrice_ask,
     closePrice_bid,
+    lastTradedVolume,
     ]
     df=DataFrame(PackedData).transpose()
     df.columns=['Day',
-    ' Time',
-    ' Open Price',
-    ' High Price',
-    ' Low Price',
-    ' Close Price',
+    'Time',
+    'Open Price ask',
+    'Open Price bid',
+    'High Price ask',
+    'High Price bid',
+    'Low Price ask',
+    'Low Price bid',
+    'Close Price ask',
+    'Close Price bid',
+    'Last Trade Volume',
     ]
 
     from time import strftime,localtime
