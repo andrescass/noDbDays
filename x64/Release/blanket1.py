@@ -124,7 +124,7 @@ def processJson(filename, filei, csvFile):
                         closePrice_bid.append(lastline.get('closePrice').get('bid'))
                         highPrice_ask.append(lastline.get('closePrice').get('ask'))
                         highPrice_bid.append(lastline.get('closePrice').get('bid'))
-                        lowPrice_bid.append(lastline.get('lowPrice').get('bid'))
+                        lowPrice_bid.append(lastline.get('closePrice').get('bid'))
                         lowPrice_ask.append(lastline.get('closePrice').get('ask'))
                     
                         daystamp.append(newDate.split("T")[0])
@@ -162,7 +162,8 @@ def processJson(filename, filei, csvFile):
                         closePrice_bid.append(lastline.get('closePrice').get('bid'))
                         highPrice_ask.append(lastline.get('closePrice').get('ask'))
                         highPrice_bid.append(lastline.get('closePrice').get('bid'))
-                        lowPrice_bid.append(lastline.get('lowPrice').get('bid'))
+                        lowPrice_bid.append(lastline.get('closePrice').get('bid'))
+                        lowPrice_ask.append(lastline.get('closePrice').get('ask'))
                     
                         daystamp.append(datetime.date.fromtimestamp(j.get('timestamp')/1000).strftime("%y-%m-%d"))
                         timestamp.append(datetime.datetime.fromtimestamp(j.get('timestamp')/1000).strftime("%y-%m-%dT%H:%M:%S"))
